@@ -88,11 +88,25 @@
   --shadow-pixel: var(--shadow-pixel);
 }
 
+/* macOS native titlebar overlay — traffic lights sit here */
+.tauri-drag-region {
+  -webkit-app-region: drag;
+  app-region: drag;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 28px;
+  z-index: 9999;
+  pointer-events: none; /* buttons below still clickable */
+}
+
 @layer base {
   html,
   body,
   #root {
     @apply m-0 w-full h-full overflow-hidden font-pixel text-base text-text;
+    background: #0f0e17;
   }
 
   * {

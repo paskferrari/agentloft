@@ -173,6 +173,8 @@ function App() {
 
   return (
     <div ref={containerRef} className="w-full h-full relative overflow-hidden">
+      {/* macOS native titlebar drag region */}
+      <div className="tauri-drag-region" />
       <OfficeCanvas
         officeState={officeState}
         onClick={handleClick}

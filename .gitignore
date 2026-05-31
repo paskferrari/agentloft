@@ -35,3 +35,5 @@ playwright-report/
 
 # Local notes (not for commit)
 /notes/
+tauri-app/src-tauri/target/
+.DS_Store
