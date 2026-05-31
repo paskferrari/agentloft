@@ -23,6 +23,9 @@ import {
   GRID_LINE_COLOR,
   HOVERED_OUTLINE_ALPHA,
   OUTLINE_Z_SORT_OFFSET,
+  ROOM_LABEL_BG,
+  ROOM_LABEL_BORDER,
+  ROOM_LABEL_TEXT,
   ROTATE_BUTTON_BG,
   SEAT_AVAILABLE_COLOR,
   SEAT_BUSY_COLOR,
@@ -43,6 +46,7 @@ import {
 import type {
   Character,
   FurnitureInstance,
+  RoomLabel,
   Seat,
   SpriteData,
   TileType as TileTypeVal,
@@ -484,6 +488,46 @@ function renderRotateButton(
   return { cx, cy, radius };
 }
 
+// ── Room labels ─────────────────────────────────────────────────
+function renderRoomLabels(
+  ctx: CanvasRenderingContext2D,
+  rooms: RoomLabel[],
+  offsetX: number,
+  offsetY: number,
+  zoom: number,
+): void {
+  const fontSize = Math.max(8, Math.round(10 * zoom));
+  ctx.font = `${fontSize}px "FS Pixel Sans", monospace`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  for (const room of rooms) {
+    const px = offsetX + (room.col + 0.5) * TILE_SIZE * zoom;
+    const py = offsetY + (room.row + 0.5) * TILE_SIZE * zoom;
+
+    const metrics = ctx.measureText(room.name);
+    const padX = 6 * zoom;
+    const padY = 3 * zoom;
+    const bw = metrics.width + padX * 2;
+    const bh = fontSize + padY * 2;
+
+    // Background pill
+    ctx.fillStyle = ROOM_LABEL_BG;
+    ctx.beginPath();
+    ctx.roundRect(px - bw / 2, py - bh / 2, bw, bh, 3 * zoom);
+    ctx.fill();
+
+    // Border
+    ctx.strokeStyle = ROOM_LABEL_BORDER;
+    ctx.lineWidth = zoom;
+    ctx.stroke();
+
+    // Text
+    ctx.fillStyle = ROOM_LABEL_TEXT;
+    ctx.fillText(room.name, px, py);
+  }
+}
+
 // ── Speech bubbles ──────────────────────────────────────────────
 
 function renderBubbles(
@@ -582,6 +626,7 @@ export function renderFrame(
   tileColors?: Array<ColorValue | null>,
   layoutCols?: number,
   layoutRows?: number,
+  rooms?: RoomLabel[],
 ): { offsetX: number; offsetY: number } {
   // Clear
   ctx.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -621,6 +666,11 @@ export function renderFrame(
   const selectedId = selection?.selectedAgentId ?? null;
   const hoveredId = selection?.hoveredAgentId ?? null;
   renderScene(ctx, allFurniture, characters, offsetX, offsetY, zoom, selectedId, hoveredId);
+
+  // Room labels (below characters/bubbles)
+  if (rooms && rooms.length > 0) {
+    renderRoomLabels(ctx, rooms, offsetX, offsetY, zoom);
+  }
 
   // Speech bubbles (always on top of characters)
   renderBubbles(ctx, characters, offsetX, offsetY, zoom);

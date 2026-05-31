@@ -252,6 +252,7 @@ export function OfficeCanvas({
           characters: officeState.characters,
         };
 
+        const layout = officeState.getLayout();
         const { offsetX, offsetY } = renderFrame(
           ctx,
           w,
@@ -264,9 +265,10 @@ export function OfficeCanvas({
           panRef.current.y,
           selectionRender,
           editorRender,
-          officeState.getLayout().tileColors,
-          officeState.getLayout().cols,
-          officeState.getLayout().rows,
+          layout.tileColors,
+          layout.cols,
+          layout.rows,
+          layout.rooms,
         );
         offsetRef.current = { x: offsetX, y: offsetY };
 

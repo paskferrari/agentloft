@@ -115,6 +115,14 @@ export interface PlacedFurniture {
   color?: ColorValue;
 }
 
+export interface RoomLabel {
+  name: string;
+  /** Center tile column for the label */
+  col: number;
+  /** Center tile row for the label */
+  row: number;
+}
+
 export interface OfficeLayout {
   version: 1;
   cols: number;
@@ -125,6 +133,8 @@ export interface OfficeLayout {
   tileColors?: Array<ColorValue | null>;
   /** Bumped when the bundled default layout changes; forces a reset on existing installs */
   layoutRevision?: number;
+  /** Room labels rendered on the canvas */
+  rooms?: RoomLabel[];
 }
 
 export interface Character {

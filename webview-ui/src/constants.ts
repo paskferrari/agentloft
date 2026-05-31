@@ -148,3 +148,8 @@ export const FUEL_COLOR_CRITICAL = '#ff2222';
 export const FUEL_GAUGE_BG = '#222';
 export const TEAM_LEAD_COLOR = '#ffd700';
 export const TEAM_ROLE_COLOR = '#66aaff';
+
+// ── Room labels ──────────────────────────────────────────────
+export const ROOM_LABEL_BG = 'rgba(15, 14, 23, 0.65)';
+export const ROOM_LABEL_BORDER = 'rgba(255,255,255,0.12)';
+export const ROOM_LABEL_TEXT = 'rgba(255,255,255,0.55)';
